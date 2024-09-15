@@ -13,8 +13,8 @@ import userRoutes from './routes/userRoutes';
 
 const app: Express = express();
 
-// whitelist contains the allowed origins for CORS requests.
-const whitelist = ['https://<your-production-api-link>']; // It is used to check if a request's origin is allowed to access the server.
+
+const whitelist = ['https://<your-production-api-link>']; 
 
 const corsOptions: CorsOptions = {
   origin: function (origin, callback) {
@@ -25,8 +25,8 @@ const corsOptions: CorsOptions = {
     }
   },
 };
-app.use(config.DEV_ENV === 'PROD' ? cors(corsOptions) : cors()); // Enable CORS based on the Production environment: allow specific request origins in production, allow all requests in Dev environments.
-app.set('trust proxy', config.DEV_ENV === 'PROD' ? true : false); // Enable trust proxy on the Production environment
+app.use(config.DEV_ENV === 'PROD' ? cors(corsOptions) : cors()); 
+app.set('trust proxy', config.DEV_ENV === 'PROD' ? true : false); 
 app.use(express.json());
 app.use(helmet());
 app.use(xss());
