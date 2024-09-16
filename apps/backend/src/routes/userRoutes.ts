@@ -4,7 +4,7 @@ import { protect } from '../middleware/middleware';
 
 const router: Router = express.Router();
 
-router.use(protect);
+// router.use(protect);
 router.get('/:id', getUser);
 router.get('/', getAllUsers);
 

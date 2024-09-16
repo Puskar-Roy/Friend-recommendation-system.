@@ -10,6 +10,7 @@ import CheckError from './util/checkError';
 import errorHandler from './middleware/errorMiddleware';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
+import friendRoutes from './routes/friendRoutes'
 
 const app: Express = express();
 
@@ -42,6 +43,7 @@ import './database/connectDb';
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/friends', friendRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.json({ success: true, message: 'API IS WORKING 🥳' });
