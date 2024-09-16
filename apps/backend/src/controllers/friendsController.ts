@@ -87,3 +87,23 @@ export const rejectFriendRequest = async (userId: string, requestId: string) => 
   
     return recommendations;
   };
+
+
+
+  export const searchUsers = asyncHandler(async (req: Request, res: Response) => {
+    const { query } = req.query;
+  
+    if (!query) {
+      return res.status(400).json({ message: 'Search query is required' });
+    }
+  
+
+    const users = await UserModel.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } },   
+        { email: { $regex: query, $options: 'i' } }   
+      ]
+    }).limit(10);  // Limit the number of results
+  
+    res.status(200).json(users);
+  });
