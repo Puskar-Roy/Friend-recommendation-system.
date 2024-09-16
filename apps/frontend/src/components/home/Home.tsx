@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { IoMdPersonAdd } from "react-icons/io";
-// import Avatar from 'react-avatar';
+
+
 import { Button } from '../ui/button';
 import { UserPlus } from 'lucide-react';
-// import Avatar from 'react-avatar';
+
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 interface User {
