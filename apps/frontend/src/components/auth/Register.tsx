@@ -1,14 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { RegisterFormData } from "../../interfaces";
-// import { useRegister } from "../hooks/useRegister";
+import { useRegister } from "@/hooks/useRegister";
 
 
 const Register = () => {
-//   const { register, error, isLoading, isSucess } = useRegister();
-const error = null
-const isLoading = false
-const isSucess = null
+  const { register, error, isLoading, isSucess } = useRegister();
   const [formData, setFormData] = useState<RegisterFormData>({
     name: "",
     email: "",
@@ -27,7 +24,7 @@ const isSucess = null
 
   const handleSubmit =async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // await register(formData);
+    await register(formData);
   };
 
   return (
