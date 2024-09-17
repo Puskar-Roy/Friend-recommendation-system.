@@ -29,7 +29,7 @@ export const acceptFriendRequest = async (userId: string, requestId: string) => 
 
 
 export const getAllFriendRequests = asyncHandler(async (req: Request, res: Response) => {
-    const user = await UserModel.findById(req.body.id).populate('friendRequests', 'name email'); 
+    const user = await UserModel.findById(req.params.id).populate('friendRequests', 'name email'); 
   
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -106,4 +106,40 @@ export const rejectFriendRequest = async (userId: string, requestId: string) => 
     }).limit(10);  // Limit the number of results
   
     res.status(200).json(users);
+  });
+
+  
+
+  const getMutualFriendsCount1 = (userFriends: Types.ObjectId[], otherUserFriends: Types.ObjectId[]) => {
+    const userFriendSet = new Set(userFriends.map(f => f.toString()));
+    const mutualFriends = otherUserFriends.filter(friendId => userFriendSet.has(friendId.toString()));
+    return mutualFriends.length;
+  };
+  
+  // Controller to show all friends along with mutual friends count
+  export const getAllFriendsWithMutuals = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.params.id;
+  
+    const user = await UserModel.findById(new Types.ObjectId(userId)).populate('friends', 'name email friends');
+  
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+  
+    const userFriends = user.friends.map(f => f._id);
+  
+    const friendsWithMutuals = await Promise.all(
+      user.friends.map(async (friend: any) => {
+        const mutualFriendsCount = getMutualFriendsCount1(userFriends, friend.friends);
+        return {
+          name: friend.name,
+          email: friend.email,
+          mutualFriendsCount,
+        };
+      })
+    );
+  
+    res.status(200).json({
+      friends: friendsWithMutuals,
+    });
   });

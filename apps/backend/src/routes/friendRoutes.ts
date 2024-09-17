@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { sendFriendRequest, acceptFriendRequest, getRecommendations, rejectFriendRequest, getAllFriendRequests, searchUsers } from '../controllers/friendsController';
+import { sendFriendRequest, acceptFriendRequest, getRecommendations, rejectFriendRequest, getAllFriendRequests, searchUsers, getAllFriendsWithMutuals } from '../controllers/friendsController';
 
 const router = express.Router();
 
@@ -48,8 +48,9 @@ router.post('/reject-friend-request', async (req: Request, res: Response) => {
 });
 
 
-router.get('/friend-requests',  getAllFriendRequests);
-router.get('/search', searchUsers); 
+router.get('/friend-requests/:id',  getAllFriendRequests);
+router.get('/search', searchUsers);
+router.get('/:id', getAllFriendsWithMutuals); 
 router.get('/recommendations/:userId', async (req: Request, res: Response) => {
     const { userId } = req.params;
 
