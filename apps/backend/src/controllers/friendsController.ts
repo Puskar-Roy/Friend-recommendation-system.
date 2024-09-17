@@ -9,9 +9,23 @@ export const sendFriendRequest = async (fromUserId: string, toUserId: string) =>
 
   if (!fromUser || !toUser) throw new Error('User not found');
 
-  toUser.friendRequests.push(new Types.ObjectId(fromUserId)); 
+
+  const alreadyRequested = toUser.friendRequests.some(id => id.toString() === fromUserId);
+  const alreadyFriends = toUser.friends.some(id => id.toString() === fromUserId);
+
+  if (alreadyRequested) {
+    throw new Error('Friend request already sent');
+  }
+
+  if (alreadyFriends) {
+    throw new Error('You are already friends with this user');
+  }
+
+  
+  toUser.friendRequests.push(new Types.ObjectId(fromUserId));
   await toUser.save();
 };
+
 
 export const acceptFriendRequest = async (userId: string, requestId: string) => {
   const user = await UserModel.findById(new Types.ObjectId(userId));
